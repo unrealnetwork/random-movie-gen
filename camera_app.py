@@ -1,21 +1,18 @@
 #gnu license, everyone can use it as their own, by @unreal_shoushuke
 #if you are using arch-linux based system, better use a virtual environment. 
-#to create a vrtiual envriontments, follow these steps
+#to create a vrtiual envriontments, follow these commands in your terminal
 '''
 cd YOUR-PATH
 python -m venv NAME_YOUR_VENV
 python -m venv NAME_OF_YOUR_VENV
 source name_of_your_venv/bin/activate
 '''
-#to deactivate venv, use
-'''
-deactivate
-'''
+#to deactivate venv, use command "deactivate".
 
 import cv2 #pip install open-cv python (you can use pacman or apt too)
 import tkinter as tk #pip install tkinter (you can use sudo pacman -S tk or apt install tkinter too)
 from datetime import datetime #this is pre-installed pythn module, you dont have to install it externally
-from PIL import Image, ImageTk #virtual environment mei pillo ko pip install karle
+from PIL import Image, ImageTk #pillow can be installed using pip or any package manager you have
 
 class CameraApp:
     def __init__(self, root):
@@ -70,6 +67,24 @@ class CameraApp:
             self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
 
         self.root.after(10, self.update)
+        
+#use these lines instead of the logic above if your camera/webcam is capturing horizontally
+    
+    ''' 
+        def update(self):
+        ret, frame = self.camera.read()
+        if ret:
+            frame = cv2.flip(frame, 1)
+
+            if self.is_recording:
+                duration = datetime.now() - self.start_time
+                self.canvas.create_text(300, 370, text=str(duration), fill="white")
+            self.photo = ImageTk.PhotoImage(Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
+
+        self.root.after(10, self.update)
+        
+        '''
 
     def __del__(self):
         self.camera.release()
